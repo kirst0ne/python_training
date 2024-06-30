@@ -1,16 +1,8 @@
 # -*- coding: utf-8 -*-
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import NoAlertPresentException
 import unittest
 from group import Group
-
-def is_alert_present(self):
-    try:
-        self.wd.switch_to_alert()
-    except NoAlertPresentException as e:
-        return False
-    return True
 
 class test_add_group(unittest.TestCase):
     def setUp(self):
