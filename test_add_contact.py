@@ -9,11 +9,11 @@ class test_add_contact(unittest.TestCase):
         self.wd = webdriver.Chrome(executable_path='C:/chromedriver.exe')
         self.wd.implicitly_wait(30)
 
-    def test_add_contact(self):
-        wd = self.wd
-        #open_home_page
+    def open_home_page(self, wd):
         wd.get("http://localhost/addressbook/edit.php")
-        #login
+
+    def login(self, wd):
+        # login
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys("admin")
@@ -21,9 +21,11 @@ class test_add_contact(unittest.TestCase):
         wd.find_element_by_name("pass").clear()
         wd.find_element_by_name("pass").send_keys("secret")
         wd.find_element_by_xpath("//input[@value='Login']").click()
-        #init create contact
+
+    def create_contact(self, wd):
+        # init create contact
         wd.find_element_by_link_text("add new").click()
-        #fill contact form
+        # fill contact form
         wd.find_element_by_name("firstname").click()
         wd.find_element_by_name("firstname").clear()
         wd.find_element_by_name("firstname").send_keys("Kirill")
@@ -54,11 +56,20 @@ class test_add_contact(unittest.TestCase):
         wd.find_element_by_name("byear").click()
         wd.find_element_by_name("byear").clear()
         wd.find_element_by_name("byear").send_keys("1996")
-        #submit contact creation
+        # submit contact creation
         wd.find_element_by_xpath("//div[@id='content']/form/input[20]").click()
-        #logout
+
+    def logout(self, wd):
+        # logout
         wd.find_element_by_link_text("Logout").click()
-    
+
+    def test_add_contact(self):
+        wd = self.wd
+        self.open_home_page(wd)
+        self.login(wd)
+        self.create_contact(wd)
+        self.logout(wd)
+
     def is_element_present(self, how, what):
         try: self.wd.find_element(by=how, value=what)
         except NoSuchElementException as e: return False
