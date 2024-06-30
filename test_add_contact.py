@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
 import unittest
+from group_contact import Group
 
 class test_add_contact(unittest.TestCase):
     def setUp(self):
@@ -67,16 +68,16 @@ class test_add_contact(unittest.TestCase):
         wd = self.wd
         self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
-        self.create_contact(wd, firstname="Kirill", secondname="Seleznev", middlename="Aleksandrovich", nickname="kirts0ne", address="Repischeva st. 10, 149 flat",
-                            mobile_phone="+79119715279", email="okolo66@yandex.ru", bday="30", bmounth="April", byear="1996")
+        self.create_contact(wd, Group(firstname="Kirill", secondname="Seleznev", middlename="Aleksandrovich", nickname="kirts0ne", address="Repischeva st. 10, 149 flat",
+                            mobile_phone="+79119715279", email="okolo66@yandex.ru", bday="30", bmounth="April", byear="1996"))
         self.logout(wd)
 
     def test_add_empty_contact(self):
         wd = self.wd
         self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
-        self.create_contact(wd, firstname="", secondname="", middlename="", nickname="", address="",
-                            mobile_phone="", email="", bday="", bmounth="-", byear="")
+        self.create_contact(wd, Group(firstname="", secondname="", middlename="", nickname="", address="",
+                            mobile_phone="", email="", bday="", bmounth="-", byear=""))
         self.logout(wd)
 
     def is_element_present(self, how, what):
