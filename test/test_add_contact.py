@@ -4,15 +4,15 @@ from model.contact import Contact
 
 def test_add_contact(app):
     app.session.login(username="admin", password="secret")
-    app.contact.create(Contact(firstname="Kirill", secondname="Seleznev", middlename="Aleksandrovich",
+    app.contact.create(Contact(firstname="Kirill", lastname="Seleznev", middlename="Aleksandrovich",
                                nickname="kirts0ne", address="Repischeva st. 10, 149 flat",
-                               mobile_phone="+79119715279", email="okolo66@yandex.ru", bday="30",
+                               mobile="+79119715279", email="okolo66@yandex.ru", bday="30",
                                bmounth="April", byear="1996"))
     app.session.logout()
 
 
 def test_add_empty_contact(app):
     app.session.login(username="admin", password="secret")
-    app.contact.create(Contact(firstname="", secondname="", middlename="", nickname="", address="",
-                               mobile_phone="", email="", bday="", bmounth="-", byear=""))
+    app.contact.create(Contact(firstname="", lastname="", middlename="", nickname="", address="",
+                               mobile="", email="", bday="", bmounth="-", byear=""))
     app.session.logout()
