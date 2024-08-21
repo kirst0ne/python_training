@@ -2,6 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
+from model.contact import Contact
 
 
 class ContactHelper:
@@ -75,3 +76,29 @@ class ContactHelper:
         wd = self.app.wd
         self.open_contact_page()
         return len(wd.find_elements_by_name("selected[]"))
+
+    def get_contact_list(self):
+        wd = self.app.wd
+        self.open_contact_page()
+        WebDriverWait(wd, 10).until(EC.presence_of_element_located((By.NAME, "selected[]")))
+        contacts = []
+        rows = wd.find_elements_by_css_selector("tr[name='entry']")
+        for row in rows:
+            cells = row.find_elements_by_tag_name("td")
+            checkbox = cells[0].find_element_by_tag_name("input")
+            contact_id = checkbox.get_attribute("value")
+            lastname = cells[1].text
+            firstname = cells[2].text
+            contacts.append(Contact(firstname=firstname, lastname=lastname,  contact_id=contact_id))
+        return contacts
+
+#    def get_contact_list(self):
+#        wd = self.app.wd
+#        self.open_contact_page()
+#        contacts = []
+#        for element in wd.find_elements_by_css_selector("td.center>input"):
+#            text = element.text
+#            id = element.find_element_by_name("selected[]").get_attribute("value")
+#            contacts.append(Contact(element.text, element.id))
+#        return contacts
+
