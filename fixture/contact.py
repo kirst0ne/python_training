@@ -53,10 +53,13 @@ class ContactHelper:
                 element.send_keys(text)
 
     def modify_first_contact(self, contact):
+        self.modify_contact_by_index(0)
+
+    def modify_contact_by_index(self, index, contact):
         wd = self.app.wd
         self.open_contact_page()
         # init modify contact
-        wd.find_element_by_xpath("//img[@alt='Edit']").click()
+        wd.find_elements_by_xpath("//img[@alt='Edit']")[index].click()
         # modify contact form
         self.fill_contact_form(contact)
         # submit contact creation
@@ -65,10 +68,19 @@ class ContactHelper:
         self.contact_cache = None
 
     def delete_first_contact(self):
+        self.delete_contact_by_index(0)
+
+    def delete_contact_by_index(self, index):
         wd = self.app.wd
         self.open_contact_page()
-        # select first contact
-        wd.find_element_by_name("selected[]").click()
+        # select contact
+        elements = wd.find_elements_by_name("selected[]")
+        if index < len(elements):
+            elements[index].click()
+        else:
+            raise IndexError("Index out of range for the contact list.")
+        wd.find_elements_by_name("selected[]")[index].click()
+        elements[index].click()
         wd.execute_script("window.scrollBy(0, 800);")
         # submit deletion
         wd.find_element_by_xpath("//input[@value='Delete']").click()
