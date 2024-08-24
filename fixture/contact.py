@@ -19,13 +19,16 @@ class ContactHelper:
     def create(self, contact):
         wd = self.app.wd
         self.open_contact_page()
-        # init create contact
-        wd.find_element_by_link_text("add new").click()
+        self.open_creating_contact()
         self.fill_contact_form(contact)
         # submit contact creation
         wd.find_element_by_xpath("//div[@id='content']/form/input[20]").click()
-        self.open_contact_page()
+        self.app.return_to_home_page()
         self.contact_cache = None
+
+    def open_creating_contact(self):
+        wd = self.app.wd
+        wd.find_element_by_link_text("add new").click()
 
     def fill_contact_form(self, contact):
         self.change_field_contact_value("firstname", contact.firstname)
@@ -39,23 +42,35 @@ class ContactHelper:
         self.change_field_contact_value("email", contact.email)
         self.change_field_contact_value("email2", contact.email2)
         self.change_field_contact_value("email3", contact.email3)
-        self.change_field_contact_value("bday", contact.bday, is_dropdown=True)
-        self.change_field_contact_value("bmonth", contact.bmonth, is_dropdown=True)
-        self.change_field_contact_value("byear", contact.byear)
+        self.change_contact_choose("bday", contact.bday)
+        self.change_contact_choose("bmonth", contact.bmonth)
+        self.change_contact_choose("byear", contact.byear)
 
-    def change_field_contact_value(self, field_name, text, is_dropdown=False):
+    def change_contact_choose(self, field_name, text):
+        wd = self.app.wd
+        element = wd.find_element_by_name(field_name)
+        if element.tag_name.lower() == "select":
+            Select(element).select_by_visible_text(text)
+        elif element.tag_name.lower() == "input":
+            element.send_keys(text)
+        else:
+            raise ValueError(f"Unsupported element type: {element.tag_name}")
+
+    def change_field_contact_value(self, field_name, text):
+        wd = self.app.wd
+        element = wd.find_element_by_name(field_name)
+        if element.tag_name.lower() == "select":
+            Select(element).select_by_visible_text(text)
+        else:
+            element.clear()
+            element.send_keys(text)
+
+    def filling_contact_write(self, field_name, text):
         wd = self.app.wd
         if text is not None:
-            element = WebDriverWait(wd, 10).until(
-                EC.element_to_be_clickable((By.NAME, field_name))
-            )
-            element.click()
-            if is_dropdown:
-                select = Select(element)
-                select.select_by_visible_text(text)
-            else:
-                element.clear_phone()
-                element.send_keys(text)
+            wd.find_element_by_name(field_name).click()
+            wd.find_element_by_name(field_name).clear()
+            wd.find_element_by_name(field_name).send_keys(text)
 
     def modify_first_contact(self, contact):
         self.modify_contact_by_index(0)

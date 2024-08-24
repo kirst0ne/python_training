@@ -1,25 +1,54 @@
 from model.contact import Contact
+import pytest
+import random
+import string
 
 
-def test_add_contact(app):
+def random_string(prefix, maxlen):
+    symbols = string.ascii_letters + string.digits + " "*6
+    return prefix + "".join([random.choice(symbols) for _ in range(random.randrange(maxlen))])
+
+
+def random_phone_number():
+    digits = string.digits
+    return "+7" + "".join([random.choice(digits) for _ in range(10)])
+
+
+def random_month():
+    months = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ]
+    return random.choice(months)
+
+
+def random_day():
+    return str(random.randint(1, 31))
+
+
+def random_year():
+    return str(random.randint(1917, 2024))
+
+
+def random_email(prefix, maxlen):
+    domains = ["gmail.com", "outlook.com", "bk.com", "mail.ru", "yandex.ru"]
+    return (prefix + "".join([random.choice(string.ascii_letters + string.digits) for _ in range(random.randint(1, maxlen))])
+            + "@" + random.choice(domains))
+
+
+testdata = [Contact(firstname=random_string("firstname", 10), lastname=random_string("lastname", 20),
+            middlename=random_string("middlename", 20), nickname=random_string("nickname", 10),
+            address=random_string("address", 50),
+            homephone=random_phone_number(), workphone=random_phone_number(), mobilephone=random_phone_number(),
+            email=random_email("email", 10), email2=random_email("email", 10), email3=random_email("email", 10),
+            bday=random_day(), bmonth=random_month(), byear=random_year())]
+
+
+@pytest.mark.parametrize("contact", testdata, ids=[repr(x) for x in testdata])
+def test_add_contact(app, contact):
     old_contacts = app.contact.get_contact_list()
-    contact = Contact(firstname="Kirill", lastname="Seleznev", middlename="Aleksandrovich",
-                               nickname="kirts0ne", address="Repischeva st. 10, 149 flat",
-                               homephone="+7(911)971-52-79", workphone="+7 911 971 52 79", mobilephone="+79119715279",
-                      email="okolo66@yandex.ru", email2="1234@ya.ru", email3="1234@ou.ru",
-                      bday="30", bmonth="April", byear="1996")
     app.contact.create(contact)
     assert len(old_contacts) + 1 == app.contact.count()
     new_contacts = app.contact.get_contact_list()
     old_contacts.append(contact)
     assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
-
-#def test_add_empty_contact(app):
-#    old_contacts = app.contact.get_contact_list()
-#    contact = Contact(firstname="", lastname="", middlename="", nickname="", address="",
-#                               mobilephone="", email="", bday="", bmonth="-", byear="")
-#    app.contact.create(contact)
-#    new_contacts = app.contact.get_contact_list()
-#    assert len(old_contacts) + 1 == len(new_contacts)
-#    old_contacts.append(contact)
-#    assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
