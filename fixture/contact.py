@@ -31,30 +31,26 @@ class ContactHelper:
         wd.find_element_by_link_text("add new").click()
 
     def fill_contact_form(self, contact):
-        self.change_field_contact_value("firstname", contact.firstname)
-        self.change_field_contact_value("lastname", contact.lastname)
-        self.change_field_contact_value("middlename", contact.middlename)
-        self.change_field_contact_value("nickname", contact.nickname)
-        self.change_field_contact_value("address", contact.address)
-        self.change_field_contact_value("home", contact.homephone)
-        self.change_field_contact_value("work", contact.workphone)
-        self.change_field_contact_value("mobile", contact.mobilephone)
-        self.change_field_contact_value("email", contact.email)
-        self.change_field_contact_value("email2", contact.email2)
-        self.change_field_contact_value("email3", contact.email3)
+        self.filling_contact_write("firstname", contact.firstname)
+        self.filling_contact_write("lastname", contact.lastname)
+        self.filling_contact_write("middlename", contact.middlename)
+        self.filling_contact_write("nickname", contact.nickname)
+        self.filling_contact_write("address", contact.address)
+        self.filling_contact_write("home", contact.homephone)
+        self.filling_contact_write("work", contact.workphone)
+        self.filling_contact_write("mobile", contact.mobilephone)
+        self.filling_contact_write("email", contact.email)
+        self.filling_contact_write("email2", contact.email2)
+        self.filling_contact_write("email3", contact.email3)
         self.change_contact_choose("bday", contact.bday)
         self.change_contact_choose("bmonth", contact.bmonth)
-        self.change_contact_choose("byear", contact.byear)
+        self.filling_contact_write("byear", contact.byear)
 
     def change_contact_choose(self, field_name, text):
         wd = self.app.wd
-        element = wd.find_element_by_name(field_name)
-        if element.tag_name.lower() == "select":
-            Select(element).select_by_visible_text(text)
-        elif element.tag_name.lower() == "input":
-            element.send_keys(text)
-        else:
-            raise ValueError(f"Unsupported element type: {element.tag_name}")
+        if text is not None:
+            wd.find_element_by_name(field_name).click()
+            Select(wd.find_element_by_name(field_name)).select_by_visible_text(text)
 
     def change_field_contact_value(self, field_name, text):
         wd = self.app.wd
@@ -73,7 +69,12 @@ class ContactHelper:
             wd.find_element_by_name(field_name).send_keys(text)
 
     def modify_first_contact(self, contact):
-        self.modify_contact_by_index(0)
+        self.modify_contact_by_index(0, contact)
+
+    def select_contact_by_index(self, index):
+        wd = self.app.wd
+        self.open_contact_page()
+        wd.find_elements_by_name("selected[]")[index].click()
 
     def modify_contact_by_index(self, index, contact):
         wd = self.app.wd
@@ -124,13 +125,13 @@ class ContactHelper:
             for row in rows:
                 cells = row.find_elements_by_tag_name("td")
                 checkbox = cells[0].find_element_by_tag_name("input")
-                contact_id = checkbox.get_attribute("value")
+                id = checkbox.get_attribute("value")
                 lastname = cells[1].text
                 firstname = cells[2].text
                 address = cells[3].text
                 all_phones = cells[5].text
                 all_emails = cells[4].text
-                self.contact_cache.append(Contact(firstname=firstname, lastname=lastname,  contact_id=contact_id, address=address,
+                self.contact_cache.append(Contact(firstname=firstname, lastname=lastname,  id=id, address=address,
                                                   all_phones_from_home_page=all_phones, all_emails_from_home_page=all_emails))
         return list(self.contact_cache)
 
@@ -156,14 +157,14 @@ class ContactHelper:
         firstname = wd.find_element_by_name("firstname").get_attribute("value")
         lastname = wd.find_element_by_name("lastname").get_attribute("value")
         address = wd.find_element_by_name("address").get_attribute("value")
-        contact_id = wd.find_element_by_name("id").get_attribute("value")
+        id = wd.find_element_by_name("id").get_attribute("value")
         homephone = wd.find_element_by_name("home").get_attribute("value")
         workphone = wd.find_element_by_name("work").get_attribute("value")
         mobilephone = wd.find_element_by_name("mobile").get_attribute("value")
         email = wd.find_element_by_name("email").get_attribute("value")
         email2 = wd.find_element_by_name("email2").get_attribute("value")
         email3 = wd.find_element_by_name("email3").get_attribute("value")
-        return Contact(firstname=firstname, lastname=lastname, contact_id=contact_id, address=address,
+        return Contact(firstname=firstname, lastname=lastname, id=id, address=address,
                        email=email, email2=email2, email3=email3,
                        homephone=homephone, workphone=workphone, mobilephone=mobilephone)
 

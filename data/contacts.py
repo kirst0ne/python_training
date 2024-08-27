@@ -40,4 +40,5 @@ testdata = [Contact(firstname=random_string("firstname", 10), lastname=random_st
             address=random_string("address", 50),
             homephone=random_phone_number(), workphone=random_phone_number(), mobilephone=random_phone_number(),
             email=random_email("email", 10), email2=random_email("email", 10), email3=random_email("email", 10),
-            bday=random_day(), bmonth=random_month(), byear=random_year())]
+            bday=random_day(), bmonth=random_month(), byear=random_year())
+]
