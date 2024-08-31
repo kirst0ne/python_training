@@ -1,12 +1,12 @@
-from fixture.db import DbFixture
+from fixture.orm import SQLAlchemyFixture
+from model.group import Group
 
-db = DbFixture(host="127.0.0.1", name="addressbook", user="root", password="")
-
+db = SQLAlchemyFixture(host="127.0.0.1", name="addressbook", user="root", password="")
 
 try:
-    contacts = db.get_contact_list()
-    for contact in contacts:
+    contacts_in_group = db.get_contacts_not_in_group(Group(group_id="147"))
+    for contact in contacts_in_group:
         print(contact)
-    print(len(contacts))
+    print(len(contacts_in_group))
 finally:
-    db.destroy()
+    pass

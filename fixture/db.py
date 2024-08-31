@@ -2,6 +2,7 @@ import pymysql.cursors
 from model.group import Group
 from model.contact import Contact
 import re
+import random
 
 
 class DbFixture:
@@ -43,6 +44,16 @@ class DbFixture:
 
     def destroy(self):
         self.connection.close()
+
+
+    def is_contact_in_group(self, contact_id, group_id):
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute(f"SELECT * FROM address_in_groups WHERE id = {contact_id} AND group_id = {group_id}")
+            result = cursor.fetchone()
+        finally:
+            cursor.close()
+        return result is not None
 
 
 def clean(data):
