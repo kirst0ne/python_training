@@ -8,7 +8,7 @@ def test_add_random_contact_to_random_group(app, orm):
         app.group.create(Group(group_name="qweqwe", group_header="qweqwe", group_footer="qweqwe"))
     contacts_not_in_groups = orm.get_contacts_not_in_any_group()
     if not contacts_not_in_groups:
-        app.contact.creating(Contact(firstname="qwe", lastname="qwe", mobilephone="0000000"))
+        app.contact.create(Contact(firstname="qwe", lastname="qwe", mobilephone="0000000"))
         contacts_not_in_groups = orm.get_contacts_not_in_any_group()
     assert contacts_not_in_groups
     random_contact = random.choice(contacts_not_in_groups)
