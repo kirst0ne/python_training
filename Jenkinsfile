@@ -29,11 +29,22 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                timeout(time: 5, unit: 'MINUTES') {
-                    echo 'Running specific test with pytest'
+                timeout(time: 20, unit: 'MINUTES') {
+                    echo 'Running tests with pytest'
                     bat '''
                         call .\\venv\\Scripts\\activate
-                        pytest D:\\QA\\AUTO\\python_training_2\\test\\test_add_group.py -v --junitxml=results.xml --alluredir=allure-results
+                        pytest D:\\QA\\AUTO\\python_training_2\\test\\test_add_contact.py \
+                               D:\\QA\\AUTO\\python_training_2\\test\\test_add_contact_in_group.py \
+                               D:\\QA\\AUTO\\python_training_2\\test\\test_add_group.py \
+                               D:\\QA\\AUTO\\python_training_2\\test\\test_contacts_compare.py \
+                               D:\\QA\\AUTO\\python_training_2\\test\\test_db_matches_ui.py \
+                               D:\\QA\\AUTO\\python_training_2\\test\\test_del_contact.py \
+                               D:\\QA\\AUTO\\python_training_2\\test\\test_del_group.py \
+                               D:\\QA\\AUTO\\python_training_2\\test\\test_modify_contact.py \
+                               D:\\QA\\AUTO\\python_training_2\\test\\test_modify_group.py \
+                               D:\\QA\\AUTO\\python_training_2\\test\\test_phones.py \
+                               D:\\QA\\AUTO\\python_training_2\\test\\test_remove_contact_from_group.py \
+                               -v --junitxml=results.xml --alluredir=allure-results
                     '''
                 }
             }
