@@ -6,4 +6,4 @@ pony
 pymysql
 mysql-connector-python
 sqlalchemy
-urlib3==1.26.16
+urllib3==1.26.16
