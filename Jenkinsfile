@@ -25,7 +25,7 @@ pipeline {
             steps {
                 timeout(time: 5, unit: 'MINUTES') {
                     echo 'Running test_add_group.py with pytest'
-                    bat '.\\venv\\Scripts\\activate && pytest -v path\\to\\test_add_group.py'
+                    bat '.\\venv\\Scripts\\activate && pytest -v D:\\QA\\AUTO\\python_training_2\\test\\test_add_group.py'
                 }
             }
         }
@@ -37,3 +37,5 @@ pipeline {
         }
     }
 }
+
+Find More
