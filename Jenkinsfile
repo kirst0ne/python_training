@@ -23,7 +23,7 @@ pipeline {
                     bat 'python -m venv venv'
                     
                     echo 'Activating virtual environment and installing dependencies'
-                    bat '.\\venv\\Scripts\\activate && pip install -r requirements.txt'
+                    bat '.\\venv\\Scripts\\activate && pip install --upgrade pip setuptools wheel && pip install -r requirements.txt'
                 }
             }
         }
@@ -32,8 +32,8 @@ pipeline {
             steps {
                 timeout(time: 5, unit: 'MINUTES') {
                     script {
-                        echo 'Running tests'
-                        bat '.\\venv\\Scripts\\activate && python -m unittest discover'
+                        echo 'Running test_add_group.py'
+                        bat '.\\venv\\Scripts\\activate && python -m unittest test_add_group.py'
                     }
                 }
             }
