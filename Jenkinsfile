@@ -22,8 +22,11 @@ pipeline {
                     echo 'Creating virtual environment'
                     bat 'python -m venv venv'
                     
-                    echo 'Activating virtual environment and installing dependencies'
-                    bat '.\\venv\\Scripts\\activate && pip install --upgrade pip setuptools wheel && pip install -r requirements.txt'
+                    echo 'Activating virtual environment'
+                    bat '.\\venv\\Scripts\\activate && python -m pip install --upgrade pip --user'
+                    
+                    echo 'Installing setuptools and wheel'
+                    bat '.\\venv\\Scripts\\activate && pip install --upgrade setuptools wheel && pip install -r requirements.txt'
                 }
             }
         }
