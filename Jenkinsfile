@@ -7,7 +7,7 @@ pipeline {
                 checkout scm
             }
         }
-        
+
         stage('Setup') {
             steps {
                 echo 'Setting console encoding to UTF-8'
@@ -22,7 +22,6 @@ pipeline {
                 echo 'Activating virtual environment and installing dependencies'
                 bat '''
                     .\\venv\\Scripts\\activate
-                    python -m pip install --upgrade pip
                     pip install -r requirements.txt
                 '''
             }
@@ -34,21 +33,29 @@ pipeline {
                     echo 'Running tests with pytest'
                     bat '''
                         .\\venv\\Scripts\\activate
+                        echo Current directory:
+                        cd
+                        echo Directory contents:
+                        dir D:\\QA\\AUTO\\python_training_2\\test
+                        pytest --version
                         pytest -v --junitxml=results.xml --alluredir=allure-results D:\\QA\\AUTO\\python_training_2\\test
                     '''
                 }
+            }
+        }
+
+        stage('Declarative: Post Actions') {
+            steps {
+                echo 'Publishing JUnit test results'
+                junit 'results.xml'
+                echo 'Generating Allure report'
+                allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
             }
         }
     }
 
     post {
         always {
-            echo 'Publishing JUnit test results'
-            junit 'results.xml'
-
-            echo 'Generating Allure report'
-            allure includeProperties: false, jdk: '', results: [[path: 'allure-results']], commandline: 'allure'
-
             echo 'Deactivating virtual environment'
             bat '.\\venv\\Scripts\\deactivate'
         }
