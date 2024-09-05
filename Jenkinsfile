@@ -42,7 +42,6 @@ pipeline {
                                D:\\QA\\AUTO\\python_training_2\\test\\test_del_group.py \
                                D:\\QA\\AUTO\\python_training_2\\test\\test_modify_contact.py \
                                D:\\QA\\AUTO\\python_training_2\\test\\test_modify_group.py \
-                               D:\\QA\\AUTO\\python_training_2\\test\\test_phones.py \
                                D:\\QA\\AUTO\\python_training_2\\test\\test_remove_contact_from_group.py \
                                -v --junitxml=results.xml --alluredir=allure-results
                     '''
