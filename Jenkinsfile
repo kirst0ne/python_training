@@ -37,5 +37,3 @@ pipeline {
         }
     }
 }
-
-Find More
