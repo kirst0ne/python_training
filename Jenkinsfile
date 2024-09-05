@@ -31,10 +31,10 @@ pipeline {
         stage('Run Tests') {
             steps {
                 timeout(time: 5, unit: 'MINUTES') {
-                    echo 'Running test_add_group.py with pytest'
+                    echo 'Running tests with pytest'
                     bat '''
                         .\\venv\\Scripts\\activate
-                        pytest -v D:\\QA\\AUTO\\python_training_2\\test\\test_add_group.py --junitxml=results.xml --alluredir=allure-results
+                        pytest -v --junitxml=results.xml --alluredir=allure-results D:\\QA\\AUTO\\python_training_2\\test
                     '''
                 }
             }
