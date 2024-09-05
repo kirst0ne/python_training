@@ -17,15 +17,15 @@ pipeline {
             steps {
                 echo 'Creating virtual environment'
                 bat 'python -m venv venv'
-                echo 'Activating virtual environment and updating pip'
-                bat '.\\venv\\Scripts\\activate && python -m pip install --upgrade pip'
+                echo 'Activating virtual environment and installing dependencies'
+                bat '.\\venv\\Scripts\\activate && python -m pip install --upgrade pip && pip install -r requirements.txt'
             }
         }
         stage('Run Tests') {
             steps {
                 timeout(time: 5, unit: 'MINUTES') {
-                    echo 'Running test_add_group.py'
-                    bat '.\\venv\\Scripts\\activate && python -m unittest test.test_add_group'
+                    echo 'Running test_add_group.py with pytest'
+                    bat '.\\venv\\Scripts\\activate && pytest -v path\\to\\test_add_group.py'
                 }
             }
         }
