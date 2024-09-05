@@ -5,7 +5,6 @@ pipeline {
         stage('Setup') {
             steps {
                 script {
-                    bat 'chcp 65001'
                     bat 'C:\\Python39\\python.exe -m venv venv'
                     bat 'call venv\\Scripts\\activate && pip install --upgrade pip'
                     bat 'pip install --upgrade virtualenv'
