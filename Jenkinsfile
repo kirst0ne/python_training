@@ -33,11 +33,6 @@ pipeline {
                     echo 'Running tests with pytest'
                     bat '''
                         .\\venv\\Scripts\\activate
-                        echo Current directory:
-                        cd
-                        echo Directory contents:
-                        dir D:\\QA\\AUTO\\python_training_2\\test
-                        pytest --version
                         pytest -v --junitxml=results.xml --alluredir=allure-results D:\\QA\\AUTO\\python_training_2\\test
                     '''
                 }
