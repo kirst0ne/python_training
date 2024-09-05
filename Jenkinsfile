@@ -33,13 +33,13 @@ pipeline {
                     echo 'Running tests with pytest'
                     bat '''
                         .\\venv\\Scripts\\activate
-                        pytest -v --junitxml=results.xml --alluredir=allure-results D:\\QA\\AUTO\\python_training_2\\test
+                        pytest -v --junitxml=results.xml --alluredir=allure-results
                     '''
                 }
             }
         }
 
-        stage('Declarative: Post Actions') {
+        stage('Post Actions') {
             steps {
                 echo 'Publishing JUnit test results'
                 junit 'results.xml'
@@ -56,3 +56,5 @@ pipeline {
         }
     }
 }
+
+Find More
