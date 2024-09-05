@@ -1,8 +1,9 @@
-pytest
+pytest==8.2.2
 pytest_bdd
-selenium
+selenium==3.141.0
 jsonpickle
 pony
 pymysql
 mysql-connector-python
 sqlalchemy
+urlib3==1.26.16
