@@ -34,6 +34,7 @@ pipeline {
                     bat '''
                         call .\\venv\\Scripts\\activate
                         pytest D:\\QA\\AUTO\\python_training_2\\test\\test_contacts_compare.py \
+                               D:\\QA\\AUTO\\python_training_2\\test\\test_remove_contact_from_group.py \
                                D:\\QA\\AUTO\\python_training_2\\test\\test_add_contact.py \
                                D:\\QA\\AUTO\\python_training_2\\test\\test_add_contact_in_group.py \
                                D:\\QA\\AUTO\\python_training_2\\test\\test_add_group.py \
@@ -42,7 +43,6 @@ pipeline {
                                D:\\QA\\AUTO\\python_training_2\\test\\test_del_group.py \
                                D:\\QA\\AUTO\\python_training_2\\test\\test_modify_contact.py \
                                D:\\QA\\AUTO\\python_training_2\\test\\test_modify_group.py \
-                               D:\\QA\\AUTO\\python_training_2\\test\\test_remove_contact_from_group.py \
                                -v --junitxml=results.xml --alluredir=allure-results
                     '''
                 }
