@@ -1,22 +1,50 @@
 pipeline {
     agent any
 
+    environment {
+        PYTHON_HOME = 'C:\\Python39'
+        PATH = "${PYTHON_HOME};${env.PATH}"
+    }
+
     stages {
         stage('Setup') {
             steps {
                 script {
-                    bat 'C:\\Python39\\python.exe -m venv venv'
-                    bat 'call venv\\Scripts\\activate && pip install --upgrade pip'
-                    bat 'pip install --upgrade virtualenv'
-                    bat 'pip install -r requirements.txt'
+                    echo 'Setting console encoding to UTF-8'
+                    bat 'chcp 65001'
                 }
             }
         }
-        stage('Test') {
+        
+        stage('Install Dependencies') {
             steps {
                 script {
-                    bat 'call venv\\Scripts\\activate && pytest test\\test_add_group.py'
+                    echo 'Creating virtual environment'
+                    bat 'python -m venv venv'
+                    
+                    echo 'Activating virtual environment and installing dependencies'
+                    bat '.\\venv\\Scripts\\activate && pip install -r requirements.txt'
                 }
+            }
+        }
+        
+        stage('Run Tests') {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    script {
+                        echo 'Running tests'
+                        bat '.\\venv\\Scripts\\activate && python -m unittest discover'
+                    }
+                }
+            }
+        }
+    }
+    
+    post {
+        always {
+            script {
+                echo 'Deactivating virtual environment'
+                bat '.\\venv\\Scripts\\deactivate'
             }
         }
     }
