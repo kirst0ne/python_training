@@ -21,7 +21,7 @@ pipeline {
                 bat 'python -m venv venv'
                 echo 'Activating virtual environment and installing dependencies'
                 bat '''
-                    .\\venv\\Scripts\\activate
+                    call .\\venv\\Scripts\\activate
                     pip install -r requirements.txt
                 '''
             }
@@ -32,7 +32,7 @@ pipeline {
                 timeout(time: 5, unit: 'MINUTES') {
                     echo 'Running specific test with pytest'
                     bat '''
-                        .\\venv\\Scripts\\activate
+                        call .\\venv\\Scripts\\activate
                         pytest D:\\QA\\AUTO\\python_training_2\\test\\test_add_group.py -v --junitxml=results.xml --alluredir=allure-results
                     '''
                 }
@@ -52,7 +52,7 @@ pipeline {
     post {
         always {
             echo 'Deactivating virtual environment'
-            bat '.\\venv\\Scripts\\deactivate'
+            bat 'call .\\venv\\Scripts\\deactivate'
         }
     }
 }
