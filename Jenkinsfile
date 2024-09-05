@@ -33,10 +33,10 @@ pipeline {
                     echo 'Running tests with pytest'
                     bat '''
                         call .\\venv\\Scripts\\activate
-                        pytest D:\\QA\\AUTO\\python_training_2\\test\\test_add_contact.py \
+                        pytest D:\\QA\\AUTO\\python_training_2\\test\\test_contacts_compare.py \
+                               D:\\QA\\AUTO\\python_training_2\\test\\test_add_contact.py \
                                D:\\QA\\AUTO\\python_training_2\\test\\test_add_contact_in_group.py \
                                D:\\QA\\AUTO\\python_training_2\\test\\test_add_group.py \
-                               D:\\QA\\AUTO\\python_training_2\\test\\test_contacts_compare.py \
                                D:\\QA\\AUTO\\python_training_2\\test\\test_db_matches_ui.py \
                                D:\\QA\\AUTO\\python_training_2\\test\\test_del_contact.py \
                                D:\\QA\\AUTO\\python_training_2\\test\\test_del_group.py \
