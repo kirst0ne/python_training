@@ -6,7 +6,7 @@ pipeline {
             steps {
                 script {
                     bat 'chcp 65001'
-                    bat 'python -m venv venv'
+                    bat 'C:\\Python39\\python.exe -m venv venv'
                     bat 'call venv\\Scripts\\activate && pip install --upgrade pip'
                     bat 'pip install --upgrade virtualenv'
                     bat 'pip install -r requirements.txt'
