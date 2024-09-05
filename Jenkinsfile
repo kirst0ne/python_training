@@ -25,13 +25,17 @@ pipeline {
             steps {
                 timeout(time: 5, unit: 'MINUTES') {
                     echo 'Running test_add_group.py with pytest'
-                    bat '.\\venv\\Scripts\\activate && pytest -v D:\\QA\\AUTO\\python_training_2\\test\\test_add_group.py'
+                    bat '.\\venv\\Scripts\\activate && pytest -v D:\\QA\\AUTO\\python_training_2\\test\\test_add_group.py --junitxml=results.xml --alluredir=allure-results'
                 }
             }
         }
     }
     post {
         always {
+            echo 'Publishing JUnit test results'
+            junit 'results.xml'
+            echo 'Generating Allure report'
+            allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
             echo 'Deactivating virtual environment'
             bat '.\\venv\\Scripts\\deactivate'
         }
